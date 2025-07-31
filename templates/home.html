@@ -1,0 +1,70 @@
+{% extends 'base.html' %} {# ¡Esta es la línea clave! #}
+
+{% block title %}Lista de Películas - The Movie Blog{% endblock %}
+
+{% block content %}
+    <h1 style="text-align: center; margin-bottom: 20px; color: #87ceeb;">Películas</h1>
+    <p style="text-align: center; color: #cbd5e0; margin-bottom: 30px;">
+        Descubre y comenta tus películas favoritas.
+    </p>
+
+    {% if peliculas_con_datos_adicionales %}
+        {% for item in peliculas_con_datos_adicionales %}
+            {% with pelicula=item.pelicula recent_comments=item.recent_comments form_comentario_instance=item.form_comentario_instance %}
+            <div class="post">
+                {% if pelicula.portada %}
+                    <img src="{{ pelicula.portada.url }}" alt="Portada de {{ pelicula.titulo }}" class="post-image">
+                {% endif %}
+                <div class="post-content">
+                    {# CAMBIO AQUÍ: pelicula.id se cambia a pelicula.pk #}
+                    <h2><a href="{% url 'post' pelicula.pk %}">{{ pelicula.titulo }}</a></h2>
+                    <p><strong>Director:</strong> {{ pelicula.director }}</p>
+                    <p><strong>Fecha de Lanzamiento:</strong> {{ pelicula.fecha_lanzamiento|date:"d M Y" }}</p>
+                    {% if pelicula.puntuacion_media %}
+                        <p><strong>Puntuación:</strong> <span class="rating-display">{{ pelicula.puntuacion_media|floatformat:1 }}</span> / 5</p>
+                    {% else %}
+                        <p>Sin calificaciones aún.</p>
+                    {% endif %}
+                    {# CAMBIO AQUÍ: pelicula.id se cambia a pelicula.pk #}
+                    <p>{{ pelicula.descripcion|truncatechars:200 }} <a href="{% url 'post' pelicula.pk %}">Leer más...</a></p>
+
+                    <div class="comments-section">
+                        <h4>Comentarios recientes:</h4>
+                        {% if recent_comments %}
+                            {% for comentario in recent_comments %}
+                                <div class="comment-item">
+                                    <div class="comment-author-date">
+                                        {{ comentario.autor.username }} el {{ comentario.fecha_creacion|date:"d M Y H:i" }}
+                                    </div>
+                                    <div>{{ comentario.texto|truncatechars:100 }}</div>
+                                </div>
+                            {% endfor %}
+                        {% else %}
+                            <p class="no-comments">Sé el primero en comentar esta película.</p>
+                        {% endif %}
+
+                        {% if user.is_authenticated %}
+                            <div class="add-comment-form">
+                                <h4>Deja tu comentario:</h4>
+                                <form method="post" action="{% url 'home' %}">
+                                    {% csrf_token %}
+                                    {# Este input oculto debe seguir siendo pelicula.id porque es el valor que recogemos en views.py #}
+                                    <input type="hidden" name="pelicula_id" value="{{ pelicula.id }}">
+                                    {{ form_comentario_instance.as_p }}
+                                    <button type="submit" name="submit_comment">Enviar Comentario</button>
+                                </form>
+                            </div>
+                        {% else %}
+                            <p style="text-align: center; color: #a0aec0; font-size: 0.9em; margin-top: 15px;">
+                                <a href="{% url 'login_register' %}" style="color: #4299e1; text-decoration: none;">Inicia sesión</a> para dejar un comentario.
+                            </p>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            {% endwith %}
+        {% endfor %}
+    {% else %}
+        <p class="no-content">No hay películas disponibles en este momento.</p>
+    {% endif %}
+{% endblock content %}

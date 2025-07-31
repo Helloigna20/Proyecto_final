@@ -1,0 +1,76 @@
+
+/* Estilos básicos para este ejemplo */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #1a202c; /* Fondo oscuro */
+    color: #e2e8f0; /* Texto claro */
+}
+.navbar {
+    background-color: #2d3748; /* Fondo para la barra de navegación */
+    padding: 15px 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.4);
+}
+.navbar a {
+    color: #a0aec0; /* Color de los enlaces */
+    text-decoration: none;
+    margin-left: 20px;
+    font-weight: bold;
+    transition: color 0.3s ease;
+}
+.navbar a:hover {
+    color: #fff;
+}
+.navbar .logo {
+    font-size: 1.8em;
+    color: #4299e1; /* Color del logo */
+    font-weight: bold;
+}
+.navbar .user-info {
+    color: #cbd5e0; /* Color del texto del usuario */
+    margin-right: 15px;
+}
+.container {
+    max-width: 900px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #2d3748;
+    border-radius: 8px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+}
+footer {
+    text-align: center;
+    padding: 20px;
+    margin-top: 50px;
+    background-color: #2d3748;
+    color: #a0aec0;
+    border-top: 1px solid #4a5568;
+}
+/* Estilos para mensajes de Django */
+.messages {
+    list-style: none;
+    padding: 0;
+    margin: 20px 0;
+    text-align: center;
+}
+.messages li {
+    padding: 12px 20px;
+    border-radius: 10px;
+    margin-bottom: 12px;
+    font-weight: bold;
+    color: #fff;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    animation: fadeIn 0.5s ease-out;
+}
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+.messages .success { background-color: #28a745; }
+.messages .error { background-color: #dc3545; }
+.messages .info { background-color: #17a2b8; }
+.messages .warning { background-color: #ffc107; color: #333; }

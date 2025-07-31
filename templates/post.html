@@ -1,0 +1,85 @@
+{% extends 'base.html' %} {# Esta línea SIEMPRE es la primera #}
+{% load static %}
+{% load blog_filters %}
+
+{% block title %}{{ pelicula.titulo }} - Mi Blog de Películas{% endblock %}
+
+{% block content %} {# Todo el contenido visible debe ir DENTRO de este bloque #}
+
+    {# Mensajes de Django (se mantienen aquí si tu base.html NO tiene un bloque de mensajes separado) #}
+    {# Si base.html ya maneja los mensajes, puedes eliminar este bucle for de aquí #}
+    {% if messages %}
+        <ul class="messages">
+            {% for message in messages %}
+                <li class="{{ message.tags }}">{{ message }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+
+    <div class="container">
+        <p><a href="{% url 'home' %}">&larr; Volver a la lista de películas</a></p>
+
+        <div class="movie-detail-header">
+            {% if pelicula.portada %}
+                <img src="{{ pelicula.portada.url }}" alt="Portada de {{ pelicula.titulo }}" class="movie-poster">
+            {% endif %}
+            <div class="movie-info">
+                <h1>{{ pelicula.titulo }}</h1>
+                <p><strong>Director:</strong> {{ pelicula.director }}</p>
+                <p><strong>Actores:</strong> {{ pelicula.actores }}</p>
+                <p><strong>Fecha de Lanzamiento:</strong> {{ pelicula.fecha_lanzamiento|date:"d M Y" }}</p>
+                {% if pelicula.puntuacion_media %}
+                    <p><strong>Puntuación Media:</strong> <span class="rating-display">{{ pelicula.puntuacion_media|floatformat:1 }}</span> / 5</p>
+                {% else %}
+                    <p><strong>Puntuación Media:</strong> Sin calificaciones aún</p>
+                {% endif %}
+            </div>
+        </div>
+
+        <h2>Descripción</h2>
+        <p>{{ pelicula.descripcion }}</p>
+
+        {% if pelicula.trailer_url %}
+            <h2>Trailer</h2>
+            <div class="video-container" style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; margin-bottom: 20px;">
+                <iframe src="{{ pelicula.trailer_url|replace_youtube_url }}" frameborder="0" allowfullscreen 
+                        style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;"></iframe>
+            </div>
+        {% endif %}
+
+        <div class="comments-section">
+            <h3>Comentarios ({{ comentarios|length }}):</h3>
+            {% if comentarios %}
+                {% for comentario in comentarios %}
+                    <div class="comment">
+                        <div class="comment-author">
+                            {{ comentario.autor.username }}
+                            <span class="comment-date">el {{ comentario.fecha_creacion|date:"d M Y H:i" }}</span>
+                        </div>
+                        <div class="comment-text">
+                            {{ comentario.texto }}
+                        </div>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <p class="no-comments">Aún no hay comentarios para esta película.</p>
+            {% endif %}
+
+            {% if user.is_authenticated %}
+                <div class="add-comment-form">
+                    <h4>Deja tu comentario:</h4>
+                    <form method="post" action="{% url 'post' pelicula.pk %}">
+                        {% csrf_token %}
+                        {{ form_comentario.as_p }}
+                        <button type="submit" name="submit_comment">Enviar Comentario</button>
+                    </form>
+                </div>
+            {% else %}
+                <p style="text-align: center; color: #a0aec0; font-size: 0.9em; margin-top: 15px;">
+                    <a href="{% url 'login_register' %}" style="color: #4299e1; text-decoration: none;">Inicia sesión</a> para dejar un comentario.
+                </p>
+            {% endif %}
+        </div>
+    </div>
+
+{% endblock content %}
