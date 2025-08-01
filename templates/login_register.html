@@ -1,0 +1,446 @@
+{% load static %} {# Si vas a usar archivos estáticos en el futuro #}
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Movie Blog - Iniciar Sesión / Registrarse</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #1a2a47; /* Fondo azul oscuro */
+            color: #ffffff; /* Texto blanco para el título del blog */
+            overflow: hidden; /* Evita barras de desplazamiento si el contenido se desborda */
+        }
+
+        .container {
+            display: flex;
+            width: 90%; /* Ajustar según sea necesario */
+            max-width: 1200px; /* Ancho máximo para pantallas grandes */
+            align-items: center;
+            justify-content: flex-start; /* Mueve los ítems al inicio del contenedor */
+            gap: 100px; /* Aumenta el espacio entre el título y el formulario */
+            padding-left: 5%; /* Añade un poco de padding para que no se pegue al borde izquierdo */
+            padding-right: 5%; /* Asegura espacio también en la derecha */
+        }
+
+        .blog-title {
+            flex: none; /* No permite que este elemento crezca o encoja */
+            text-align: left; /* Alinea el texto a la izquierda */
+        }
+
+        .blog-title h1 {
+            font-size: 6.5em; /* Tamaño de fuente más grande */
+            font-weight: bold;
+            color: #87ceeb; /* Color azul claro para el texto */
+            margin: 0;
+            line-height: 1;
+        }
+
+        .form-switch {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .form-switch button {
+            background: none;
+            border: none;
+            color: #87ceeb;
+            font-size: 1.2em;
+            cursor: pointer;
+            padding: 5px 10px;
+            margin: 0 10px;
+            outline: none;
+            position: relative;
+        }
+
+        .form-switch button.active {
+            font-weight: bold;
+            color: #ffffff;
+        }
+
+        .form-switch button.active::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: -5px;
+            height: 2px;
+            background-color: #ffffff;
+        }
+
+        .login-form-container {
+            flex: 1; /* Permite que el contenedor del formulario ocupe el espacio restante */
+            display: flex;
+            justify-content: flex-start; /* Ajusta esto si quieres que el formulario se alinee de otra forma */
+            align-items: center;
+        }
+
+        .login-card {
+            background-color: #2c2c2c; /* Gris más oscuro para la tarjeta de inicio de sesión */
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+            width: 350px; /* Ancho fijo para la tarjeta de inicio de sesión */
+            text-align: center;
+            position: relative; /* Para posicionamiento de mensajes */
+        }
+
+        .login-card h2 {
+            color: #ffffff;
+            margin-bottom: 30px;
+            font-size: 1.8em;
+            font-weight: normal;
+        }
+
+        /* Estilos para los campos de formulario de Django */
+        .login-card form p {
+            margin-bottom: 25px; /* Espacio entre cada campo de formulario */
+            position: relative;
+            text-align: left; /* Alinea etiquetas y campos a la izquierda */
+        }
+
+        .login-card form label {
+            display: block; /* Cada label en su propia línea */
+            color: #aaaaaa;
+            font-size: 0.9em;
+            margin-bottom: 5px;
+        }
+
+        .login-card form input[type="text"],
+        .login-card form input[type="password"] {
+            width: calc(100% - 40px - 20px); /* Ajusta el ancho para el relleno del icono y el botón de visibilidad */
+            padding: 15px 20px 15px 40px; /* Relleno para texto e icono */
+            border: none;
+            border-radius: 8px;
+            background-color: #444444; /* Campos de entrada más oscuros */
+            color: #ffffff;
+            font-size: 1.1em;
+            outline: none;
+            box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.3); /* Sombra interior para profundidad */
+        }
+
+        .login-card form input::placeholder {
+            color: #aaaaaa;
+        }
+
+        .login-card form .icon {
+            position: absolute;
+            left: 15px;
+            top: 50%; /* Ajusta si hay label encima */
+            transform: translateY(-50%);
+            color: #aaaaaa; /* Color del icono */
+            pointer-events: none;
+        }
+        /* Ajuste específico para el icono cuando hay label encima */
+        .login-card form p label + input + .icon {
+             top: calc(50% + 10px); /* Ajusta la posición del icono para que esté centrado con el input */
+        }
+
+        .login-card form .toggle-password {
+            position: absolute;
+            right: 15px;
+            top: 50%; /* Ajusta si hay label encima */
+            transform: translateY(-50%);
+            color: #aaaaaa;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+        /* Ajuste específico para el toggle cuando hay label encima */
+        .login-card form p label + input + .toggle-password {
+             top: calc(50% + 10px); /* Ajusta la posición del toggle para que esté centrado con el input */
+        }
+
+
+        .login-card form .errorlist {
+            color: #ff6b6b; /* Rojo para errores */
+            list-style: none;
+            padding: 0;
+            margin-top: 5px;
+            font-size: 0.9em;
+            text-align: left;
+        }
+        .login-card form .errorlist li {
+            margin-bottom: 5px;
+        }
+
+        .buttons-group {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 30px;
+            margin-bottom: 20px;
+            gap: 15px;
+        }
+
+        .buttons-group button {
+            flex: 1;
+            padding: 15px 25px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1em;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            font-weight: bold;
+        }
+
+        .buttons-group button.action-btn {
+            background-color: #007bff; /* Azul para Iniciar Sesión */
+            color: #ffffff;
+        }
+
+        .buttons-group button.action-btn:hover {
+            background-color: #0056b3;
+        }
+
+        .forgot-password {
+            margin-top: 25px;
+        }
+
+        .forgot-password a {
+            color: #aaaaaa; /* Gris más claro para "Olvidé mi contraseña" */
+            text-decoration: none;
+            font-size: 1em;
+            transition: color 0.3s ease;
+        }
+
+        .forgot-password a:hover {
+            color: #ffffff;
+        }
+
+        /* Estilos para mensajes de Django */
+        .messages {
+            list-style: none;
+            padding: 0;
+            margin: 20px 0;
+            text-align: center;
+        }
+        .messages li {
+            padding: 12px 20px;
+            border-radius: 10px;
+            margin-bottom: 12px;
+            font-weight: bold;
+            color: #fff;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            animation: fadeIn 0.5s ease-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .messages .success { background-color: #28a745; }
+        .messages .error { background-color: #dc3545; }
+        .messages .info { background-color: #17a2b8; }
+
+
+        /* Ajustes responsivos */
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+                text-align: center;
+                justify-content: center; /* Centra los ítems verticalmente en móviles */
+                padding-left: 0; /* Elimina el padding extra en móviles */
+                padding-right: 0; /* Elimina el padding extra en móviles */
+                width: 100%; /* Ocupa todo el ancho en móviles */
+            }
+
+            .blog-title {
+                padding-bottom: 40px; /* Agrega espacio debajo del título en pantallas pequeñas */
+                text-align: center; /* Centra el texto en móviles */
+            }
+
+            .blog-title h1 {
+                font-size: 3.5em; /* Ajusta el tamaño de la fuente para pantallas más pequeñas */
+            }
+
+            .login-form-container {
+                padding-left: 0;
+            }
+
+            .login-card {
+                width: 90%; /* Hace la tarjeta de inicio de sesión más responsiva */
+                max-width: 350px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .blog-title h1 {
+                font-size: 2.8em;
+            }
+
+            .login-card {
+                padding: 30px 20px;
+            }
+
+            .buttons-group {
+                flex-direction: column;
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <div class="blog-title">
+            <h1>THE<br>MOVIE<br>BLOG</h1>
+        </div>
+        <div class="login-form-container">
+            <div class="login-card">
+                <div class="form-switch">
+                    <button id="loginTab" class="active">Login</button>
+                    <button id="registerTab">Register</button>
+                </div>
+
+                {% for message in messages %}
+                    <ul class="messages">
+                        <li class="{{ message.tags }}">{{ message }}</li>
+                    </ul>
+                {% endfor %}
+
+                <div id="loginForm" class="form-section">
+                    <form method="post" action="{% url 'login_register' %}">
+                        {% csrf_token %}
+                        <h2>Login</h2>
+                        {% for field in login_form %}
+                            <div class="input-group">
+                                {% if field.label_tag and field.label != "Password" %} {# Opcional: mostrar labels si no son de contraseña #}
+                                    <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                                {% endif %}
+
+                                {# Renderizado del campo de input #}
+                                {% if field.name == 'username' %}
+                                    <i class="fas fa-user icon"></i>
+                                    <input type="text" name="{{ field.name }}" id="{{ field.id_for_label }}" placeholder="Usuario" value="{{ field.value|default_if_none:'' }}">
+                                {% elif field.name == 'password' %}
+                                    <i class="fas fa-lock icon"></i>
+                                    <input type="password" name="{{ field.name }}" id="{{ field.id_for_label }}" placeholder="Contraseña">
+                                    <i class="fas fa-eye toggle-password" id="togglePasswordLogin"></i>
+                                {% else %}
+                                    {{ field }} {# Para otros campos que puedan aparecer, aunque en auth form solo son username y password #}
+                                {% endif %}
+
+                                {% if field.errors %}
+                                    <ul class="errorlist">
+                                        {% for error in field.errors %}
+                                            <li>{{ error }}</li>
+                                        {% endfor %}
+                                    </ul>
+                                {% endif %}
+                            </div>
+                        {% endfor %}
+                        <div class="buttons-group">
+                            <button type="submit" class="action-btn" name="login_submit">Iniciar Sesión</button>
+                        </div>
+                        <div class="forgot-password">
+                            <a href="#">¿Olvidaste tu contraseña?</a>
+                        </div>
+                    </form>
+                </div>
+
+                <div id="registerForm" class="form-section" style="display: none;">
+                    <form method="post" action="{% url 'login_register' %}">
+                        {% csrf_token %}
+                        <h2>Register</h2>
+                        {% for field in register_form %}
+                            <div class="input-group">
+                                <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                                {% if field.name == 'username' %}
+                                    <i class="fas fa-user icon"></i>
+                                    <input type="text" name="{{ field.name }}" id="{{ field.id_for_label }}" placeholder="Nombre de usuario" value="{{ field.value|default_if_none:'' }}">
+                                {% elif field.name == 'password1' or field.name == 'password2' %}
+                                    <i class="fas fa-lock icon"></i>
+                                    <input type="password" name="{{ field.name }}" id="{{ field.id_for_label }}" placeholder="Contraseña">
+                                    <i class="fas fa-eye toggle-password" id="togglePasswordRegister{{ forloop.counter }}"></i> {# ID único para cada campo de contraseña #}
+                                {% else %}
+                                    {{ field }}
+                                {% endif %}
+
+                                {% if field.errors %}
+                                    <ul class="errorlist">
+                                        {% for error in field.errors %}
+                                            <li>{{ error }}</li>
+                                        {% endfor %}
+                                    </ul>
+                                {% endif %}
+                                {% if field.help_text %}
+                                    <small class="helptext" style="display: block; color: #aaaaaa; font-size: 0.8em; margin-top: 5px; text-align: left;">{{ field.help_text }}</small>
+                                {% endif %}
+                            </div>
+                        {% endfor %}
+                        <div class="buttons-group">
+                            <button type="submit" class="action-btn" name="register_submit">Registrarse</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const loginTab = document.getElementById('loginTab');
+        const registerTab = document.getElementById('registerTab');
+        const loginForm = document.getElementById('loginForm');
+        const registerForm = document.getElementById('registerForm');
+
+        function showForm(formId) {
+            loginForm.style.display = 'none';
+            registerForm.style.display = 'none';
+            loginTab.classList.remove('active');
+            registerTab.classList.remove('active');
+
+            if (formId === 'login') {
+                loginForm.style.display = 'block';
+                loginTab.classList.add('active');
+            } else {
+                registerForm.style.display = 'block';
+                registerTab.classList.add('active');
+            }
+        }
+
+        loginTab.addEventListener('click', () => showForm('login'));
+        registerTab.addEventListener('click', () => showForm('register'));
+
+        // Manejo de la visibilidad de la contraseña
+        document.querySelectorAll('.toggle-password').forEach(toggle => {
+            toggle.addEventListener('click', function () {
+                const passwordInput = this.previousElementSibling; // El input justo antes del ojo
+                const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+                passwordInput.setAttribute('type', type);
+
+                this.classList.toggle('fa-eye');
+                this.classList.toggle('fa-eye-slash');
+            });
+        });
+
+        // Mostrar el formulario correcto en caso de errores de POST
+        document.addEventListener('DOMContentLoaded', function() {
+            // Comprobar si hay errores en el formulario de registro (register_form)
+            const registerErrors = registerForm.querySelector('.errorlist');
+            const hasRegisterErrors = registerErrors && registerErrors.children.length > 0;
+
+            // Comprobar si hay errores en el formulario de login (login_form)
+            const loginErrors = loginForm.querySelector('.errorlist');
+            const hasLoginErrors = loginErrors && loginErrors.children.length > 0;
+
+            // Si hay un mensaje de éxito, o un error de login, mostrar login
+            const messagesList = document.querySelector('.messages');
+            const hasMessages = messagesList && messagesList.children.length > 0;
+            const isLoginError = hasMessages && messagesList.querySelector('.error') && document.querySelector('button[name="login_submit"]');
+            const isRegisterError = hasMessages && messagesList.querySelector('.error') && document.querySelector('button[name="register_submit"]');
+
+
+            if (hasRegisterErrors || (hasMessages && isRegisterError)) {
+                showForm('register');
+            } else {
+                showForm('login'); // Por defecto, o si hay errores de login
+            }
+        });
+
+    </script>
+</body>
+</html>
