@@ -16,4 +16,6 @@ urlpatterns = [
 
     # URL para cerrar sesión
     path('accounts/logout/', views.cerrar_sesion, name='cerrar_sesion'),
+
+     path('about/', views.about, name='about'),
 ]

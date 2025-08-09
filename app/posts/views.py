@@ -142,3 +142,10 @@ def cerrar_sesion(request):
     logout(request)
     messages.info(request, "Has cerrado tu sesión.")
     return redirect('home') # Redirige a la home por defecto
+
+#nosotros
+def about(request):
+    """
+    Vista para renderizar la página "Nosotros" o "Contacto".
+    """
+    return render(request, 'about.html')
