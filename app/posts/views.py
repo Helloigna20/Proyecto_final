@@ -5,8 +5,33 @@ from django.contrib.auth.forms import AuthenticationForm # Solo AuthenticationFo
 from django.contrib.auth import login, logout, authenticate
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from .models import Pelicula, Comentario, Calificacion # Asegúrate de que Calificacion también esté importada si la usas
+from .models import Pelicula, Comentario, Calificacion, Categoria # Asegúrate de que Calificacion también esté importada si la usas
 from .forms import ComentarioForm, RegistroForm # Importa tu RegistroForm personalizado desde .forms
+
+
+
+# Vista para la página principal que muestra todas las películas
+def listado_peliculas(request):
+    peliculas = Pelicula.objects.all()
+    return render(request, 'listado_peliculas.html', {'peliculas': peliculas})
+
+
+# Vista que filtra las películas por categoría
+def peliculas_por_categoria(request, categoria_slug):
+    # Obtener el objeto de la categoría o mostrar un 404 si no existe
+    categoria = get_object_or_404(Categoria, slug=categoria_slug)
+    
+    # Filtrar las películas que pertenecen a la categoría
+    peliculas = Pelicula.objects.filter(categorias=categoria)
+    
+    # Preparar el contexto para la plantilla
+    context = {
+        'categoria_actual': categoria,
+        'peliculas': peliculas,
+    }
+    
+    return render(request, 'home.html', context)
+
 
 # --- Vista para la lista de películas ---
 def home(request):

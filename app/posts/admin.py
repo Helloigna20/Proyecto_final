@@ -1,7 +1,7 @@
 # blog/admin.py
 
 from django.contrib import admin
-from .models import Pelicula, Comentario, Calificacion # Importa todos tus modelos
+from .models import Pelicula, Comentario, Calificacion, Categoria # Importa todos tus modelos
 
 # Personalización del Admin para Pelicula
 @admin.register(Pelicula)
@@ -48,3 +48,6 @@ class CalificacionAdmin(admin.ModelAdmin):
     list_filter = ('puntuacion', 'fecha_creacion', 'pelicula')
     search_fields = ('usuario__username', 'pelicula__titulo')
     # readonly_fields = ('fecha_creacion',) # Puedes hacer campos de solo lectura
+
+# Registra el nuevo modelo Categoria
+admin.site.register(Categoria)

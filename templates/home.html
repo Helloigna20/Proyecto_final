@@ -1,70 +1,118 @@
-{% extends 'base.html' %} {# ¡Esta es la línea clave! #}
+{% extends 'base.html' %}
+{% load static %}
 
 {% block title %}Lista de Películas - The Movie Blog{% endblock %}
 
 {% block content %}
-    <h1 style="text-align: center; margin-bottom: 20px; color: #87ceeb;">Películas</h1>
-    <p style="text-align: center; color: #cbd5e0; margin-bottom: 30px;">
-        Descubre y comenta tus películas favoritas.
-    </p>
+    <div class="text-center my-4">
+        <h1>Películas</h1>
+        <p class="lead text-secondary">
+            Descubre y comenta tus películas favoritas.
+        </p>
+    </div>
 
-    {% if peliculas_con_datos_adicionales %}
-        {% for item in peliculas_con_datos_adicionales %}
-            {% with pelicula=item.pelicula recent_comments=item.recent_comments form_comentario_instance=item.form_comentario_instance %}
-            <div class="post">
-                {% if pelicula.portada %}
-                    <img src="{{ pelicula.portada.url }}" alt="Portada de {{ pelicula.titulo }}" class="post-image">
-                {% endif %}
-                <div class="post-content">
-                    {# CAMBIO AQUÍ: pelicula.id se cambia a pelicula.pk #}
-                    <h2><a href="{% url 'post' pelicula.pk %}">{{ pelicula.titulo }}</a></h2>
-                    <p><strong>Director:</strong> {{ pelicula.director }}</p>
-                    <p><strong>Fecha de Lanzamiento:</strong> {{ pelicula.fecha_lanzamiento|date:"d M Y" }}</p>
-                    {% if pelicula.puntuacion_media %}
-                        <p><strong>Puntuación:</strong> <span class="rating-display">{{ pelicula.puntuacion_media|floatformat:1 }}</span> / 5</p>
-                    {% else %}
-                        <p>Sin calificaciones aún.</p>
-                    {% endif %}
-                    {# CAMBIO AQUÍ: pelicula.id se cambia a pelicula.pk #}
-                    <p>{{ pelicula.descripcion|truncatechars:200 }} <a href="{% url 'post' pelicula.pk %}">Leer más...</a></p>
+    {% comment %} {% if peliculas_carrusel %}
+        <div id="movieCarousel" class="carousel slide" data-bs-ride="carousel" data-bs-interval="5000">
+            <div class="carousel-inner">
+                {% for pelicula in peliculas_carrusel %}
+                    <div class="carousel-item {% if forloop.first %}active{% endif %}">
+                        <img src="{{ pelicula.portada.url }}" class="d-block w-100" alt="{{ pelicula.titulo }}">
+                        <div class="carousel-caption d-none d-md-block">
+                            <h2>{{ pelicula.titulo }}</h2>
+                            <p>{{ pelicula.sinopsis|truncatechars:150 }}</p>
+                            <a href="{% url 'detalle_pelicula' pelicula.pk %}" class="btn btn-primary mt-2">Ver Detalles</a>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+            <button class="carousel-control-prev" type="button" data-bs-target="#movieCarousel" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Anterior</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#movieCarousel" data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Siguiente</span>
+            </button>
+        </div>
+    {% endif %}
+    <div class="container my-5"> {% endcomment %}
 
-                    <div class="comments-section">
-                        <h4>Comentarios recientes:</h4>
-                        {% if recent_comments %}
-                            {% for comentario in recent_comments %}
-                                <div class="comment-item">
-                                    <div class="comment-author-date">
-                                        {{ comentario.autor.username }} el {{ comentario.fecha_creacion|date:"d M Y H:i" }}
-                                    </div>
-                                    <div>{{ comentario.texto|truncatechars:100 }}</div>
-                                </div>
-                            {% endfor %}
-                        {% else %}
-                            <p class="no-comments">Sé el primero en comentar esta película.</p>
-                        {% endif %}
-
-                        {% if user.is_authenticated %}
-                            <div class="add-comment-form">
-                                <h4>Deja tu comentario:</h4>
-                                <form method="post" action="{% url 'home' %}">
-                                    {% csrf_token %}
-                                    {# Este input oculto debe seguir siendo pelicula.id porque es el valor que recogemos en views.py #}
-                                    <input type="hidden" name="pelicula_id" value="{{ pelicula.id }}">
-                                    {{ form_comentario_instance.as_p }}
-                                    <button type="submit" name="submit_comment">Enviar Comentario</button>
-                                </form>
-                            </div>
-                        {% else %}
-                            <p style="text-align: center; color: #a0aec0; font-size: 0.9em; margin-top: 15px;">
-                                <a href="{% url 'login_register' %}" style="color: #4299e1; text-decoration: none;">Inicia sesión</a> para dejar un comentario.
-                            </p>
-                        {% endif %}
+    {% comment %}
+        Este bloque de código maneja los dos posibles escenarios de la vista:
+        1. La vista principal pasa una lista simple de 'peliculas'.
+        2. La vista de categorías pasa una lista de 'peliculas_con_datos_adicionales'.
+    {% endcomment %}
+    {% if peliculas %}
+        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+            {% for pelicula in peliculas %}
+                <div class="col">
+                    <div class="movie-card card h-100 bg-dark text-light border-secondary">
+                        <a href="{% url 'detalle_pelicula' pelicula.pk %}" class="text-decoration-none">
+                            {% if pelicula.portada %}
+                                <img src="{{ pelicula.portada.url }}" class="card-img-top" alt="Portada de {{ pelicula.titulo }}">
+                            {% else %}
+                                <img src="{% static 'img/default_portada.jpg' %}" class="card-img-top" alt="Portada por defecto">
+                            {% endif %}
+                        </a>
+                        <div class="card-body">
+                            <h5 class="card-title text-center">
+                                <a href="{% url 'post' pelicula.pk %}" class="text-info text-decoration-none">{{ pelicula.titulo }}</a>
+                            </h5>
+                            <p class="card-text text-secondary"><strong>Director:</strong> {{ pelicula.director }}</p>
+                            <p class="card-text text-secondary"><strong>Fecha:</strong> {{ pelicula.fecha_lanzamiento|date:"d M Y" }}</p>
+                            {% if pelicula.puntuacion_media %}
+                                <p class="card-text text-secondary">
+                                    <strong>Puntuación:</strong>
+                                    <span class="rating-display text-warning">{{ pelicula.puntuacion_media|floatformat:1 }}</span> / 5
+                                </p>
+                            {% else %}
+                                <p class="card-text text-secondary">Sin calificaciones aún.</p>
+                            {% endif %}
+                        </div>
+                        <div class="card-footer bg-secondary bg-opacity-25 border-secondary">
+                            <a href="{% url 'post' pelicula.pk %}" class="btn btn-outline-info w-100">Ver Detalles</a>
+                        </div>
                     </div>
                 </div>
-            </div>
-            {% endwith %}
-        {% endfor %}
+            {% endfor %}
+        </div>
+    {% elif peliculas_con_datos_adicionales %}
+        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+            {% for item in peliculas_con_datos_adicionales %}
+                {% with pelicula=item.pelicula %}
+                    <div class="col">
+                        <div class="movie-card card h-100 bg-dark text-light border-secondary">
+                            <a href="{% url 'post' pelicula.pk %}" class="text-decoration-none">
+                                {% if pelicula.portada %}
+                                    <img src="{{ pelicula.portada.url }}" class="card-img-top" alt="Portada de {{ pelicula.titulo }}">
+                                {% else %}
+                                    <img src="{% static 'img/default_portada.jpg' %}" class="card-img-top" alt="Portada por defecto">
+                                {% endif %}
+                            </a>
+                            <div class="card-body">
+                                <h5 class="card-title text-center">
+                                    <a href="{% url 'post' pelicula.pk %}" class="text-info text-decoration-none">{{ pelicula.titulo }}</a>
+                                </h5>
+                                <p class="card-text text-secondary"><strong>Director:</strong> {{ pelicula.director }}</p>
+                                <p class="card-text text-secondary"><strong>Fecha:</strong> {{ pelicula.fecha_lanzamiento|date:"d M Y" }}</p>
+                                {% if pelicula.puntuacion_media %}
+                                    <p class="card-text text-secondary">
+                                        <strong>Puntuación:</strong>
+                                        <span class="rating-display text-warning">{{ pelicula.puntuacion_media|floatformat:1 }}</span> / 5
+                                    </p>
+                                {% else %}
+                                    <p class="card-text text-secondary">Sin calificaciones aún.</p>
+                                {% endif %}
+                            </div>
+                            <div class="card-footer bg-secondary bg-opacity-25 border-secondary">
+                                <a href="{% url 'post' pelicula.pk %}" class="btn btn-outline-info w-100">Ver Detalles</a>
+                            </div>
+                        </div>
+                    </div>
+                {% endwith %}
+            {% endfor %}
+        </div>
     {% else %}
-        <p class="no-content">No hay películas disponibles en este momento.</p>
+        <p class="no-content text-center">No hay películas disponibles en este momento.</p>
     {% endif %}
 {% endblock content %}
