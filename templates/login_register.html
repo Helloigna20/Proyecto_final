@@ -35,12 +35,14 @@
             text-align: left; /* Alinea el texto a la izquierda */
         }
 
+        /* Sombra Clásica */
         .blog-title h1 {
-            font-size: 6.5em; /* Tamaño de fuente más grande */
+            font-size: 6.5em;
             font-weight: bold;
-            color: #87ceeb; /* Color azul claro para el texto */
+            color: #87ceeb;
             margin: 0;
             line-height: 1;
+            text-shadow: 4px 4px 8px #000000; /* Sombra sutil y elegante */
         }
 
         .form-switch {
@@ -98,65 +100,61 @@
             font-size: 1.8em;
             font-weight: normal;
         }
-
-        /* Estilos para los campos de formulario de Django */
-        .login-card form p {
-            margin-bottom: 25px; /* Espacio entre cada campo de formulario */
+        
+        /* Estilos generales para inputs */
+        .input-group {
+            margin-bottom: 25px;
             position: relative;
-            text-align: left; /* Alinea etiquetas y campos a la izquierda */
+            text-align: left;
         }
-
-        .login-card form label {
-            display: block; /* Cada label en su propia línea */
+        
+        .input-group label {
+            display: block;
             color: #aaaaaa;
             font-size: 0.9em;
             margin-bottom: 5px;
         }
-
-        .login-card form input[type="text"],
-        .login-card form input[type="password"] {
-            width: calc(100% - 40px - 20px); /* Ajusta el ancho para el relleno del icono y el botón de visibilidad */
-            padding: 15px 20px 15px 40px; /* Relleno para texto e icono */
+        
+        /* Contenedor Flexbox para alinear el input y el icono de ojo */
+        .input-container {
+            display: flex;
+            align-items: center;
+            position: relative;
+        }
+        
+        .input-container input[type="text"],
+        .input-container input[type="email"],
+        .input-container input[type="password"] {
+            flex-grow: 1; /* Ocupa el espacio disponible */
+            width: 100%;
+            padding: 15px 20px; /* Padding estándar */
             border: none;
             border-radius: 8px;
-            background-color: #444444; /* Campos de entrada más oscuros */
+            background-color: #444444;
             color: #ffffff;
             font-size: 1.1em;
             outline: none;
-            box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.3); /* Sombra interior para profundidad */
+            box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.3);
+            box-sizing: border-box;
+        }
+        
+        /* Ajuste de padding si hay icono de ojo */
+        .input-container input[type="password"] {
+            padding-right: 50px; /* Espacio para el icono de ojo */
         }
 
-        .login-card form input::placeholder {
+        .input-container input::placeholder {
             color: #aaaaaa;
         }
 
-        .login-card form .icon {
-            position: absolute;
-            left: 15px;
-            top: 50%; /* Ajusta si hay label encima */
-            transform: translateY(-50%);
-            color: #aaaaaa; /* Color del icono */
-            pointer-events: none;
-        }
-        /* Ajuste específico para el icono cuando hay label encima */
-        .login-card form p label + input + .icon {
-             top: calc(50% + 10px); /* Ajusta la posición del icono para que esté centrado con el input */
-        }
-
-        .login-card form .toggle-password {
+        /* Estilos para el icono del ojo */
+        .toggle-password {
             position: absolute;
             right: 15px;
-            top: 50%; /* Ajusta si hay label encima */
-            transform: translateY(-50%);
             color: #aaaaaa;
             cursor: pointer;
             transition: color 0.3s ease;
         }
-        /* Ajuste específico para el toggle cuando hay label encima */
-        .login-card form p label + input + .toggle-password {
-             top: calc(50% + 10px); /* Ajusta la posición del toggle para que esté centrado con el input */
-        }
-
 
         .login-card form .errorlist {
             color: #ff6b6b; /* Rojo para errores */
@@ -308,28 +306,19 @@
                         <h2>Login</h2>
                         {% for field in login_form %}
                             <div class="input-group">
-                                {% if field.label_tag and field.label != "Password" %} {# Opcional: mostrar labels si no son de contraseña #}
-                                    <label for="{{ field.id_for_label }}">{{ field.label }}</label>
-                                {% endif %}
-
-                                {# Renderizado del campo de input #}
-                                {% if field.name == 'username' %}
-                                    <i class="fas fa-user icon"></i>
-                                    <input type="text" name="{{ field.name }}" id="{{ field.id_for_label }}" placeholder="Usuario" value="{{ field.value|default_if_none:'' }}">
-                                {% elif field.name == 'password' %}
-                                    <i class="fas fa-lock icon"></i>
-                                    <input type="password" name="{{ field.name }}" id="{{ field.id_for_label }}" placeholder="Contraseña">
-                                    <i class="fas fa-eye toggle-password" id="togglePasswordLogin"></i>
-                                {% else %}
-                                    {{ field }} {# Para otros campos que puedan aparecer, aunque en auth form solo son username y password #}
-                                {% endif %}
-
+                                <label for="{{ field.id_for_label }}" {% if field.name == 'username' or field.name == 'password' %}style="display:none;"{% endif %}>{{ field.label }}</label>
+                                <div class="input-container">
+                                    {% if field.name == 'username' %}
+                                        <input type="text" name="{{ field.name }}" id="{{ field.id_for_label }}" placeholder="Usuario" value="{{ field.value|default_if_none:'' }}">
+                                    {% elif field.name == 'password' %}
+                                        <input type="password" name="{{ field.name }}" id="{{ field.id_for_label }}" placeholder="Contraseña">
+                                        <i class="fas fa-eye toggle-password" id="togglePasswordLogin"></i>
+                                    {% else %}
+                                        {{ field }}
+                                    {% endif %}
+                                </div>
                                 {% if field.errors %}
-                                    <ul class="errorlist">
-                                        {% for error in field.errors %}
-                                            <li>{{ error }}</li>
-                                        {% endfor %}
-                                    </ul>
+                                    <ul class="errorlist">{% for error in field.errors %}<li>{{ error }}</li>{% endfor %}</ul>
                                 {% endif %}
                             </div>
                         {% endfor %}
@@ -349,26 +338,26 @@
                         {% for field in register_form %}
                             <div class="input-group">
                                 <label for="{{ field.id_for_label }}">{{ field.label }}</label>
-                                {% if field.name == 'username' %}
-                                    <i class="fas fa-user icon"></i>
-                                    <input type="text" name="{{ field.name }}" id="{{ field.id_for_label }}" placeholder="Nombre de usuario" value="{{ field.value|default_if_none:'' }}">
-                                {% elif field.name == 'password1' or field.name == 'password2' %}
-                                    <i class="fas fa-lock icon"></i>
-                                    <input type="password" name="{{ field.name }}" id="{{ field.id_for_label }}" placeholder="Contraseña">
-                                    <i class="fas fa-eye toggle-password" id="togglePasswordRegister{{ forloop.counter }}"></i> {# ID único para cada campo de contraseña #}
-                                {% else %}
-                                    {{ field }}
-                                {% endif %}
-
+                                <div class="input-container">
+                                    {% if field.name == 'username' %}
+                                        <input type="text" name="username" id="id_username" placeholder="Nombre de usuario" value="{{ field.value|default_if_none:'' }}">
+                                    {% elif field.name == 'email' %}
+                                        <input type="email" name="email" id="id_email" placeholder="Correo electrónico" value="{{ field.value|default_if_none:'' }}">
+                                    {% elif field.name == 'password1'%}
+                                        <input type="password" name="password1" id="id_password1" placeholder="Contraseña">
+                                        <i class="fas fa-eye toggle-password" id="togglePasswordRegister1"></i>
+                                    {% elif field.name == 'password2' %}
+                                        <input type="password" name="password2" id="id_password2" placeholder="Repetir Contraseña">
+                                        <i class="fas fa-eye toggle-password" id="togglePasswordRegister2"></i>
+                                    {% else %}
+                                        {{ field }}
+                                    {% endif %}
+                                </div>
                                 {% if field.errors %}
-                                    <ul class="errorlist">
-                                        {% for error in field.errors %}
-                                            <li>{{ error }}</li>
-                                        {% endfor %}
-                                    </ul>
+                                    <ul class="errorlist">{% for error in field.errors %}<li>{{ error }}</li>{% endfor %}</ul>
                                 {% endif %}
                                 {% if field.help_text %}
-                                    <small class="helptext" style="display: block; color: #aaaaaa; font-size: 0.8em; margin-top: 5px; text-align: left;">{{ field.help_text }}</small>
+                                    <small class="helptext">{{ field.help_text }}</small>
                                 {% endif %}
                             </div>
                         {% endfor %}

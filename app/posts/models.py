@@ -3,10 +3,28 @@
 from django.db import models
 from django.contrib.auth.models import User # Necesitamos importar User para el autor de los comentarios y calificaciones
 from django.db.models import Avg # Importamos Avg para calcular promedios
+from django.utils.text import slugify # Para generar slugs automáticamente
+
+
+class Categoria(models.Model):
+    nombre = models.CharField(max_length=100, unique=True)
+    slug = models.SlugField(max_length=100, unique=True, blank=True)
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = slugify(self.nombre)
+        super().save(*args, **kwargs)
+
+    def __str__(self):
+        return self.nombre
+
+    class Meta:
+        verbose_name_plural = "Categorías"
+
 
 class Pelicula(models.Model):
     titulo = models.CharField(max_length=200, verbose_name="Título")
-    descripcion = models.TextField(verbose_name="Descripción")
+    sinopsis = models.TextField(verbose_name="Sinopsis", help_text="Breve descripción de la película", blank=True, null=True)
     fecha_lanzamiento = models.DateField(verbose_name="Fecha de Lanzamiento")
     director = models.CharField(max_length=100, verbose_name="Director")
     actores = models.TextField(verbose_name="Actores Principales", help_text="Separar actores por comas")
@@ -15,11 +33,16 @@ class Pelicula(models.Model):
     trailer_url = models.URLField(max_length=200, null=True, blank=True, verbose_name="URL del Trailer (YouTube/Vimeo)")
     puntuacion_media = models.DecimalField(max_digits=3, decimal_places=1, default=0.0, verbose_name="Puntuación Media")
     # Puedes añadir un campo para el género, lo haremos con un ManyToManyField si creamos el modelo Categoria
-
+    # Añade este campo para enlazar con las categorías
+    categorias = models.ManyToManyField(Categoria, related_name='peliculas')
     # Campos de timestamp para saber cuándo fue creada/actualizada la entrada de la película
     fecha_creacion = models.DateTimeField(auto_now_add=True, verbose_name="Fecha de Creación")
     fecha_actualizacion = models.DateTimeField(auto_now=True, verbose_name="Última Actualización")
-
+    plataforma_url = models.URLField(
+        blank=True, 
+        null=True, 
+        verbose_name="Enlace a Plataforma"
+    )
     def __str__(self):
         return self.titulo
 
