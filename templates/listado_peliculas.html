@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="container">
+        {% if categoria_actual %}
+            <h2>Películas en la categoría: {{ categoria_actual.nombre }}</h2>
+        {% else %}
+            <h2>Todas las películas</h2>
+        {% endif %}
+
+        <div class="movie-list">
+            {% for pelicula in peliculas %}
+                <div class="movie-card">
+                    <h3>{{ pelicula.titulo }}</h3>
+                    <p>{{ pelicula.sinopsis|truncatechars:150 }}</p>
+                    <div class="categories">
+                        {% for categoria in pelicula.categorias.all %}
+                            <a href="{% url 'peliculas_por_categoria' categoria.slug %}">{{ categoria.nombre }}</a>
+                        {% endfor %}
+                    </div>
+                </div>
+            {% empty %}
+                <p>No hay películas para mostrar en esta categoría.</p>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}
