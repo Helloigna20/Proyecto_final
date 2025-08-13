@@ -27,7 +27,7 @@ SECRET_KEY = 'django-insecure-em@p4y(@%e-eu=n-c@%021@f^%)2rx0u0+pa=h4ks2!1&^a%%v
 DEBUG = True
 
 #ALLOWED_HOSTS = ['helloigna.pythonanywhere.com']
-ALLOWED_HOSTS = ['127.0.0.1']
+ALLOWED_HOSTS = ['helloigna.pythonanywhere.com']
 
 # Application definition
 
