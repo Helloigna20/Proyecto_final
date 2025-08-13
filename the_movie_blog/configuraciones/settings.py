@@ -66,6 +66,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'app.posts.context_processors.categorias_disponibles',  # Asegúrate de que este contexto esté definido en tu app
             ],
         },
     },

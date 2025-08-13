@@ -20,6 +20,8 @@ __pycache__/
 # Directorios de medios y estáticos
 # (solo si no quieres subir archivos subidos por usuarios o archivos generados)
 media/
+media/peliculas/
+media/peliculas/protadas/
 staticfiles/
 
 # Archivos de IDEs

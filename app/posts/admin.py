@@ -12,7 +12,8 @@ class PeliculaAdmin(admin.ModelAdmin):
     prepopulated_fields = {'titulo': ('titulo',)} # Opcional: auto-rellena un campo (ej. slug) basado en otro
     fieldsets = ( # Organiza los campos en secciones en la página de edición
         (None, {
-            'fields': ('titulo', 'sinopsis', 'portada', 'trailer_url')
+
+            'fields': ('titulo', 'categorias', 'sinopsis', 'portada', 'trailer_url', 'plataforma_url')
         }),
         ('Detalles de la Película', {
             'fields': ('director', 'actores', 'fecha_lanzamiento', 'puntuacion_media'),
@@ -20,7 +21,7 @@ class PeliculaAdmin(admin.ModelAdmin):
         }),
     )
 
-# Personalización del Admin para Comentario
+# Personalización del Admin para Comentarioa
 @admin.register(Comentario)
 class ComentarioAdmin(admin.ModelAdmin):
     list_display = ('pelicula', 'autor', 'fecha_creacion', 'aprobado')
@@ -51,3 +52,4 @@ class CalificacionAdmin(admin.ModelAdmin):
 
 # Registra el nuevo modelo Categoria
 admin.site.register(Categoria)
+

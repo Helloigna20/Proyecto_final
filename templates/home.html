@@ -47,7 +47,7 @@
             {% for pelicula in peliculas %}
                 <div class="col">
                     <div class="movie-card card h-100 bg-dark text-light border-secondary">
-                        <a href="{% url 'detalle_pelicula' pelicula.pk %}" class="text-decoration-none">
+                        <a href="{% url 'post' pelicula.pk %}" class="text-decoration-none">
                             {% if pelicula.portada %}
                                 <img src="{{ pelicula.portada.url }}" class="card-img-top" alt="Portada de {{ pelicula.titulo }}">
                             {% else %}
