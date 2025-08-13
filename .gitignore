@@ -1,39 +1,37 @@
-# Created by venv; see https://docs.python.org/3/library/venv.html
+# Ignorar todo por defecto
 *
-# Ignorar archivos locales con credenciales
-the_movie_blog/cuentas_privadas.txt
 
-# Archivos de entorno
+!*.py
+!*/                 # permite carpetas
+!manage.py
+!posts/
+!posts/*.py
+!templates/
+!templates/**/*.html
+!static/
+!static/**/*
+
+# Archivos sensibles
 .env
+the_movie_blog/cuentas_privadas.txt
+the_movie_blog/configuraciones/local.py
 
 # Entorno virtual
 venv/
 env/
 
-# Directorios de Python
+# Archivos de bases de datos
+*.sqlite3
+db.sqlite3
+
+# Archivos de Python
 __pycache__/
 *.pyc
 
-# Archivos de bases de datos
-*.sqlite3
+.idea/
+.vscode/
 
-# Directorios de medios y estáticos
-# (solo si no quieres subir archivos subidos por usuarios o archivos generados)
 media/
 media/peliculas/
 media/peliculas/protadas/
 staticfiles/
-
-# Archivos de IDEs
-.idea/
-.vscode/
-
-# Configuración de Django
-the_movie_blog/configuraciones/local.py
-
-# Ignora archivos de la base de datos
-db.sqlite3
-
-# Ignora archivos y carpetas generados por Python
-__pycache__/
-*.pyc
