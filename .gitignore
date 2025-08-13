@@ -1,8 +1,11 @@
 # Ignorar todo por defecto
 *
 
+
+
+!app/posts/context_processors.py
 !*.py
-!*/                 # permite carpetas
+!*/                 
 !manage.py
 !posts/
 !posts/*.py
