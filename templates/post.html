@@ -6,13 +6,7 @@
 
 {% block content %}
     {# Mensajes de Django #}
-    {% if messages %}
-        <ul class="messages">
-            {% for message in messages %}
-                <li class="{{ message.tags }}">{{ message }}</li>
-            {% endfor %}
-        </ul>
-    {% endif %}
+    
 
     <div class="container my-5">
         <p class="mb-4"><a href="{% url 'home' %}" class="back-link">&larr; Volver a la lista de películas</a></p>
@@ -89,9 +83,7 @@
                     </form>
                 </div>
             {% else %}
-                <p class="text-center mt-3 text-secondary">
-                    <a href="{% url 'login_register' %}" class="text-info text-decoration-none">Inicia sesión</a> para dejar un comentario.
-                </p>
+                
             {% endif %}
         </div>
     </div>
