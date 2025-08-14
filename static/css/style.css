@@ -339,7 +339,10 @@ a[href^="mailto:"]:hover {
     background-color: #3182ce;
     transform: translateY(-2px);
 }
-/* Estilos para about.html */
+
+
+
+/* Estilos para la página about.html */
 
 .image-box img {
     transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
