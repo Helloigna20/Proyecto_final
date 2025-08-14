@@ -4,17 +4,97 @@
 {% block title %}Acerca de Nosotros{% endblock %}
 
 {% block content %}
-    <div class="container mt-5">
-        <h1>Acerca de Nosotros</h1>
+<div class="container my-5">
+    
+    <div class="row mb-5"> <div class="col-lg-6 mb-4 mb-lg-0">
+            <h1 class="mb-4">Sobre Nosotros</h1>
+            <p>
+                Somos un blog de películas dedicado a compartir reseñas, trailers y noticias del mundo cinematográfico.
+                Nuestro objetivo es ofrecerte las mejores recomendaciones y mantenerte al tanto de las últimas novedades.
+            </p>
+            <p>
+                Creemos que el cine es una forma de arte poderosa que une a las personas y nos permite explorar diferentes mundos
+                e historias. Con nuestra dedicación, esperamos mejorar tu experiencia cinematográfica.
+            </p>
+        </div>
+        <div class="col-lg-6">
+            <div class="row g-4">
+                <div class="col-6">
+                    <div class="image-box h-100">
+                        <img src="{% static 'img/pantalla inicio.png' %}" alt="Pantalla de inicio del blog" class="img-fluid rounded shadow-sm">
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="image-box h-100">
+                        <img src="{% static 'img/inicio.png' %}" alt="Sección de películas del blog" class="img-fluid rounded shadow-sm">
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="image-box h-100">
+                        <img src="{% static 'img/categorias.png' %}" alt="Página de categorías del blog" class="img-fluid rounded shadow-sm">
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="image-box h-100">
+                        <img src="{% static 'img/comentarios.png' %}" alt="Página de error del blog" class="img-fluid rounded shadow-sm">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="row">
+        <div class="col-lg-6 mb-4 mb-lg-0">
+            <h2 class="mb-4">Quienes Somos?</h2>
+            <p>
+                Somos un grupo de estudiantes del Informatorio de la provincia del Chaco. Estamos iniciando nuestro aprendizaje en programación y este blog es nuestro proyecto final.
+            </p>
+            <p>
+                Esperamos que disfrutes de tu experiencia en él.
+            </p>
+            <h2 class="mb-3 mt-5">Integrantes</h2>
+            <ul>
+                <li>Daiana Anabel Blanco</li>
+                <li>Gabriel Maximiliano Romero</li>
+                <li>Gonzalo Sebastián Paniagua</li>
+                <li>Ignacio Valentín Ojeda</li>
+                <li>Romina Noemí Gimenez</li>
+                <li>Sahid Nahuel Esquivel Altamirano</li>
+            </ul>
+            
+
+        </div>
+        <div class="col-lg-6">
+            <div class="row g-4">
+                <div class="col-6">
+                    <div class="image-box h-100">
+                        <img src="{% static 'img/sgp.jpg' %}" alt="Foto de Gonzalo Sebastián Paniagua" class="img-fluid rounded shadow-sm">
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="image-box h-100">
+                        <img src="{% static 'img/dai.jpg' %}" alt="Foto de Daiana Anabel Blanco" class="img-fluid rounded shadow-sm">
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="image-box h-100">
+                        <img src="{% static 'img/sahid.jpg' %}" alt="Foto de Sahid Nahuel Esquivel Altamirano" class="img-fluid rounded shadow-sm">
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="image-box h-100">
+                        <img src="{% static 'img/romi.jpg' %}" alt="Foto de Romina Noemí Gimenez" class="img-fluid rounded shadow-sm">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <h2 class="mt-5">Contáctanos</h2>
         <p>
-            Somos un blog de películas dedicado a compartir reseñas,
-            trailers y noticias del mundo cinematográfico.
+            Si tienes alguna pregunta, sugerencia o comentario, no dudes en contactarnos a través de nuestro
+            <a href="mailto:gonzapani045@gmail.com">email de contacto</a>.
         </p>
 
-        <h2>Contáctanos</h2>
-        <p>
-            Si tienes alguna pregunta, sugerencia o comentario, no dudes en contactarnos por 
-            <a href="mailto:contacto@example.com">email</a>.
-        </p>
     </div>
-{% endblock %}
+</div>
+{% endblock %}
