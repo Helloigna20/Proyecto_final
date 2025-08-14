@@ -2,7 +2,7 @@
 *
 
 
-
+!static/img
 !app/posts/context_processors.py
 !*.py
 !*/                 
