@@ -7,6 +7,10 @@ Creemos que el cine es una forma de arte poderosa que une a las personas y nos p
 
 Si quieres acceder al blog usa este [link!](https://helloigna.pythonanywhere.com/)
 
+## Demo
+
+También puedes acceder a una [demo del blog](https://www.loom.com/share/a832ca04848b42a0985c43b320c3942d?sid=6aab779d-79bc-4955-a8d8-f652dc22b60e)
+
 ## Desarrolladores
 - [Daiana Anabel Blanco](https://github.com/DaiianaB)
 - [Gabriel Maximiliano Romero](https://github.com/Gabymax7)
