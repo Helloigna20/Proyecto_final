@@ -1,5 +1,5 @@
 from django.db import models
-from django.utils import timezone #Por cada post, guarda la hs actual de la creación.
+from django.utils import timezone 
 
 # Create your models here.
 

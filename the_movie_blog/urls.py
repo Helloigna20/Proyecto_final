@@ -1,5 +1,3 @@
-#the_movie_blog/urls.py
-
 """
 URL configuration for core project.
 
@@ -23,13 +21,9 @@ from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include('app.posts.urls')),  # Incluye las URLs de la aplicación blog
-    # Si tienes otras aplicaciones, puedes incluir sus URLs a
-    # path('account/', include('django.contrib.auth.urls')),  # URLs de autenticación
+    path('', include('app.posts.urls')),
 ]
 
 if settings.DEBUG:
-    # Esto sirve los archivos de medios (subidas de usuarios)
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
-    # ¡Esta es la línea que falta para los archivos estáticos!
     urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

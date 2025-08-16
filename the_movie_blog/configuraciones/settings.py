@@ -134,5 +134,5 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # Media files (for user-uploaded content like movie posters)
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-# En settings.py
+
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')

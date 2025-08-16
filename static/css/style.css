@@ -304,7 +304,7 @@ a[href^="mailto:"]:hover {
 /* Estilo para el texto del placeholder en el formulario de comentarios */
 .add-comment-form .form-group textarea::placeholder {
     color: #a0aec0;
-    opacity: 1; /* Necesario para que funcione en algunos navegadores */
+    opacity: 1;
 }
 
 /* Estilo para el botón de enviar */

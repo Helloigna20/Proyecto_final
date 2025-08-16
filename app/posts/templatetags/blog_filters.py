@@ -2,7 +2,6 @@
 
 from django import template
 
-# 'register' debe ser el nombre de la variable para que Django la reconozca
 register = template.Library()
 
 @register.filter
